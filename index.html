@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>隐秘角落 - 地址发布页</title>
+    <link rel="shortcut icon" href="static/img/favicon.ico" />
+    <link rel="stylesheet" href="static/main.css" type="text/css" media="all" />
+</head>
+<body>
+<div class="release">
+    <div class="release-body">
+        <div class="title">
+            <h2>流落在世界的隐秘角落</h2>
+            <p>天冷记得添衣</p>
+            <p>要对自己好一点</p><br />
+            <span class="xv" style="color: #fff;font-size: 14px;font-weight: bold;padding: 2.5px 10px;border-radius: 5px;">-</span>
+            <span class="xn" style="color: #fff;font-size: 14px;font-weight: bold;padding: 2.5px 10px;border-radius: 5px;">-</span>
+        </div>
+        <div class="release-main">
+            <div class="links">
+                <ul>
+                    <!--2024/05/01 更新以下地址-->                    
+                    <h2>世界很大99995，我想把自己藏起来</h2>
+                    
+                    <li><a class="xv" href="https://app.c106c.cc/upload/files/TGTV.apk" target="_blank">安卓下载地址<i>点击下载</i></a></li>
+                    </ul>
+
+                    <ul>
+                    <li><a class="xv" href="https://app.c106c.cc/upload/files/TGtv.mobileconfig" target="_blank">苹果下载地址<i>点击下载</i></a></li>
+                                        
+                    </ul>
+                    <ul>
+                    <li><a class="xv" href="https://www.c105c.cc/" target="_blank">H5网页版地址（不推荐，容易丢失打不开）<i>点击打开</i></a></li>
+                    </ul>
+                    <ul>
+                    <li><a class="xn" href="https://app.c106c.cc/upload/files/wz.apk" target="_blank">安卓伪装版（名字图标不一样）<i>点击下载</i></a></li>
+                    </ul>
+                    <ul>
+                    <li><a class="xn" href="https://app.c106c.cc/upload/files/wz.mobileconfig" target="_blank">苹果伪装版（名字图标不一样）<i>点击下载</i></a></li>
+                    </ul>
+            </div>
+        </div>
+    </div>
+    <div class="release-body">
+        <div class="release-main">
+            <div class="links" style="border-top: none">
+                <ul>
+                    <h2>苹果安装教程</h2>
+    <img src="https://app.c106c.cc/upload/files/ios.png" alt="苹果安装教程" style="max-width: 100%; height: auto;">
+                    <br>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="release-body">
+        <div class="release-main">
+            <div class="links" style="border-top: none">
+                <ul>
+                    <h2>隐秘世界的回家地址</h2>
+                    <li><span>c108c.cc</span></li>
+                    <li><span>c109c.cc</span></li>
+                    <br>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 51v6 发布 -->
+    
+    <footer>
+        <h3>--</h3>
+        <p class="footer">© 2024 . All Rights Reserved</p>
+    </footer>
+</div>
+
+<script>
+    window.onload = function() {
+        var links = document.querySelectorAll('.links a');
+        var MAX_CONCURRENT_REQUESTS = 5; // 最大并发请求数量
+
+        function checkLink(url, statusText) {
+            return new Promise(function(resolve) {
+                var img = new Image();
+                var timestamp = Date.now(); // 当前时间戳
+                var timeout = setTimeout(function() {
+                    statusText.innerText = '超时';
+                    statusText.style.color = 'orange'; // 修改超时状态颜色为黄色
+                    resolve();
+                }, 10000); // 设置10秒超时
+
+                img.onload = function() {
+                    clearTimeout(timeout);
+                    statusText.innerText = '正常';
+                    statusText.style.color = 'green';
+                    resolve();
+                };
+
+                img.onerror = function() {
+                    clearTimeout(timeout);
+                    statusText.innerText = '点击打开';
+                    statusText.style.color = 'red';
+                    resolve();
+                };
+
+                img.src = url + '/favicon.ico?' + timestamp; // 添加时间戳
+            });
+        }
+
+        function loadLinksSequentially(links) {
+            var index = 0;
+
+            function next() {
+                if (index < links.length) {
+                    var link = links[index++];
+                    var url = link.getAttribute('href');
+                    var statusText = link.querySelector('i');
+                    checkLink(url, statusText).then(next);
+                }
+            }
+
+            next();
+        }
+
+        function loadLinksConcurrently(links) {
+            var index = 0;
+            var activeRequests = 0;
+
+            function onRequestComplete() {
+                activeRequests--;
+                if (index < links.length) {
+                    startRequest(links[index++]);
+                }
+            }
+
+            function startRequest(link) {
+                var url = link.getAttribute('href');
+                var statusText = link.querySelector('i');
+                activeRequests++;
+                checkLink(url, statusText).then(onRequestComplete);
+            }
+
+            while (activeRequests < MAX_CONCURRENT_REQUESTS && index < links.length) {
+                startRequest(links[index++]);
+            }
+        }
+
+        // 根据需求选择加载方式：顺序加载或并发加载
+        // loadLinksSequentially(links);
+        loadLinksConcurrently(links);
+    };
+</script>
+
+</body>
+</html>
